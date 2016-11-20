@@ -36,7 +36,6 @@ app.conf.update(
     # enable_utc=True,
 )
 
-# celery -A proj worker -Q feeds,celery
 # remind_exchange = {
 #     'exchange': 'remind',
 #     'exchange_type': 'direct',
@@ -51,12 +50,10 @@ app.conf.task_routes = {
     "base.mail_util.*": {
         "queue": "mail_remind",
         "routing_key": "mail_remind",
-        # **remind_exchange,
     },
     "base.sms_util.*": {
         "queue": "sms_remind",
         "routing_key": "sms_remind",
-        # **remind_exchange,
     },
 }
 

@@ -16,20 +16,23 @@ from tornado.httputil import url_concat
 
 
 @gen.coroutine
-def post(url, headers, data=None, method="POST"):
+def post(url, headers, data=None):
     body = json.dumps(data) if isinstance(data, dict) else data
     client = httpclient.AsyncHTTPClient()
-    response = yield gen.Task(client.fetch, url, **dict(headers=headers, body=body, method=method))
+    response = yield client.fetch(url, headers=headers, body=body, method="POST")
     if response.error:
         print("Error:", response.code, response.error)
     return json_decode(response.body)
 
 
 @gen.coroutine
-def get(url, headers, params=None, method="GET"):
+def get(url, headers, params=None):
     url = url_concat(url, params)
-    response = yield post(url, headers, method=method)
-    return response
+    client = httpclient.AsyncHTTPClient()
+    response = yield client.fetch(url, headers=headers, method="GET")
+    if response.error:
+        print("Error:", response.code, response.error)
+    return json_decode(response.body)
 
 
 class PushBullet(object):

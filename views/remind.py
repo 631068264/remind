@@ -32,13 +32,7 @@ class SimpleSMSHandler(BaseHandler):
     def post(self, *args, **kwargs):
         title = self.safe_vars.title
         body = self.safe_vars.body
-        # sms_util.send_sms_to_phone.apply_async(args=(title, body))
-        # respnse = yield PushBullet.send_sms_to_phone(title, body)
         PushBullet.send_sms_to_phone(title, body)
-
-        # respnse = yield gen.Task(PushBullet.send_sms_to_phone, *(title, body))
-        # self.write_json(**respnse)
-        # self.finish()
 
 
 @route("/simple_pc", name="simple_pc")
@@ -48,7 +42,6 @@ class SimplePCHandler(BaseHandler):
         title = self.safe_vars.title
         body = self.safe_vars.body
         PushBullet.send_sms_to_pc(title, body)
-        # sms_util.send_sms_to_pc.apply_async(args=(title, body))
 
 
 @route("/simple_email", name="simple_email")
@@ -59,7 +52,6 @@ class SimpleEmailHandler(BaseHandler):
         body = self.safe_vars.body
         email = self.safe_vars.email
         PushBullet.send_email(title, body, email)
-        # sms_util.send_email.apply_async(args=(title, body, email))
 
 
 @route("/sms", name="sms")
