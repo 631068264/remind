@@ -7,24 +7,29 @@
 """
 import json
 
-import requests
 from base.celery import app
 from etc import config
+from tornado import gen
+from tornado import httpclient
+from tornado.escape import json_decode
+from tornado.httputil import url_concat
 
 
-def post(url, headers, data=None):
+@gen.coroutine
+def post(url, headers, data=None, method="POST"):
     body = json.dumps(data) if isinstance(data, dict) else data
-    resp = requests.post(url, headers=headers, data=body)
-    resp.encoding = 'utf-8'
-    resp_json = resp.json()
-    return resp_json
+    client = httpclient.AsyncHTTPClient()
+    response = yield gen.Task(client.fetch, url, **dict(headers=headers, body=body, method=method))
+    if response.error:
+        print("Error:", response.code, response.error)
+    return json_decode(response.body)
 
 
-def get(url, headers, params=None):
-    resp = requests.get(url, headers=headers, params=params)
-    resp.encoding = 'utf-8'
-    resp_json = resp.json()
-    return resp_json
+@gen.coroutine
+def get(url, headers, params=None, method="GET"):
+    url = url_concat(url, params)
+    response = yield post(url, headers, method=method)
+    return response
 
 
 class PushBullet(object):
@@ -72,18 +77,3 @@ def send_twilio(to, body=None):
         client.messages.create(to=to, from_=config.TWILIO.FROM, body=body)
     else:
         raise Exception("The phone number use country +86 etc")
-
-
-@app.task
-def send_sms_to_phone(title, body):
-    PushBullet.send_sms_to_phone(title, body)
-
-
-@app.task
-def send_sms_to_pc(title, body):
-    PushBullet.send_sms_to_pc(title, body)
-
-
-@app.task
-def send_email(title, body, email):
-    PushBullet.send_email(title, body, email)

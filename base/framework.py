@@ -98,9 +98,9 @@ class BaseHandler(RequestHandler):
         if self.safe_vars:
             self.safe_vars = AttrDict(self.safe_vars)
 
-    def write_json(self, is_ok=False, msg="", **kwargs):
+    def write_json(self, is_ok=True, msg="", **kwargs):
         response = {
-            "status": 0 if is_ok else 1,
+            "status": 1 if is_ok else 0,
             "msg": msg,
         }
         if kwargs:

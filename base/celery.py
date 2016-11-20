@@ -8,7 +8,7 @@
 from celery import Celery
 
 
-# celery -A base worker -Q mail-remind,sms-remind -l INFO
+# celery -A base worker -Q mail_remind,sms_remind -l INFO
 
 
 class MyCelery(Celery):
