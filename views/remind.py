@@ -90,8 +90,9 @@ class AttachHandler(BaseHandler):
         if self.request.files:
             meta = self.request.files["file"][0]
             kwargs["file_name"] = meta["filename"]
+            # wrapper = WrapperByte(meta["body"])
+            # kwargs["content"] = WrapperByte(meta["body"]).content
             kwargs["content"] = meta["body"]
-
         # mail_util.send_email(*(to_addr, msg_type, subject, text), **kwargs)
         mail_util.send_email.apply_async(
             args=(to_addr, msg_type, subject, text), kwargs=kwargs)

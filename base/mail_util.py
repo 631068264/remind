@@ -77,6 +77,7 @@ class BaseEmail(object):
         return mime
 
     def send_email(self, subject, text, file_name=None, content=None):
+        # content = utf8(content) if content is not None else content
         msg = self._get_msg(subject)
         msg.attach(MIMEText(text, self.msg_type, self.encoding))
         if content is not None:

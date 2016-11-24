@@ -36,13 +36,15 @@ def get(url, headers, params=None):
 
 
 class PushBullet(object):
-    headers = config.PUSH_BULLET.HEADERS
-    phone_id = config.PUSH_BULLET.PHONE_ID
-    pc_id = config.PUSH_BULLET.PC_ID
-    push_url = config.PUSH_BULLET.PUSH_URL
+    def __init__(self):
+        self.headers = config.PUSH_BULLET.HEADERS
+        self.phone_id = config.PUSH_BULLET.PHONE_ID
+        self.pc_id = config.PUSH_BULLET.PC_ID
+        self.push_url = config.PUSH_BULLET.PUSH_URL
 
     @classmethod
-    def send_sms_to_phone(cls, title='', body='', device_iden=phone_id):
+    def send_sms_to_phone(cls, title='', body='', device_iden=None):
+        device_iden = device_iden if device_iden else cls.phone_id
         if title or body:
             data = {
                 "type": "note",
@@ -53,7 +55,8 @@ class PushBullet(object):
             post(cls.push_url, cls.headers, data)
 
     @classmethod
-    def send_sms_to_pc(cls, title='', body='', device_iden=pc_id):
+    def send_sms_to_pc(cls, title='', body='', device_iden=None):
+        device_iden = device_iden if device_iden else cls.pc_id
         cls.send_sms_to_phone(title, body, device_iden=device_iden)
 
     @classmethod
