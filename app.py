@@ -6,8 +6,9 @@
 @annotation = '' 
 """
 import os
-import views
 
+import views
+from etc import config
 from tornado.ioloop import IOLoop
 from tornado.web import Application
 
@@ -26,5 +27,9 @@ if __name__ == '__main__':
         debug=True,
     )
     app = Application(handler, **settings)
-    app.listen(8888)
+    app.listen(config.PORT)
+    # Typically it is best to run one process per CPU.
+    # server = HTTPServer(app)
+    # server.bind(config.port)
+    # server.start(0)  # forks one process per cpu
     IOLoop.current().start()

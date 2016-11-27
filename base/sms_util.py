@@ -36,11 +36,15 @@ def get(url, headers, params=None):
 
 
 class PushBullet(object):
-    def __init__(self):
-        self.headers = config.PUSH_BULLET.HEADERS
-        self.phone_id = config.PUSH_BULLET.PHONE_ID
-        self.pc_id = config.PUSH_BULLET.PC_ID
-        self.push_url = config.PUSH_BULLET.PUSH_URL
+    # def __init__(self):
+    #     self.headers = config.PUSH_BULLET.HEADERS
+    #     self.phone_id = config.PUSH_BULLET.PHONE_ID
+    #     self.pc_id = config.PUSH_BULLET.PC_ID
+    #     self.push_url = config.PUSH_BULLET.PUSH_URL
+    headers = config.PUSH_BULLET.HEADERS
+    phone_id = config.PUSH_BULLET.PHONE_ID
+    pc_id = config.PUSH_BULLET.PC_ID
+    push_url = config.PUSH_BULLET.PUSH_URL
 
     @classmethod
     def send_sms_to_phone(cls, title='', body='', device_iden=None):

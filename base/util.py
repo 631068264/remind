@@ -28,11 +28,3 @@ def camel_to_underline(camel, sep=''):
         upderline += _camel_to_underline(camel) + sep
 
     return upderline[:-len(sep)]
-
-
-class WrapperByte(object):
-    def __init__(self, content):
-        self.content = content
-
-    def __repr__(self):
-        return "WrapperByte"
